@@ -8,6 +8,10 @@ use App\Models\Post;
 
 class ShowPosts extends Component
 {
+    public $search ;
+
+    public $sort = 'id' ;
+    public $direction = 'desc';
    //public $name;
 
     /**
@@ -38,8 +42,13 @@ class ShowPosts extends Component
      */
     public function render()
     {
-        /* rescatamos todos lo que tiene el objeto post */
-        $posts = Post::all();
+        /* rescatamos todos lo que tiene el objeto post
+        $posts = Post::all(); */
+        /* filtramos por el titulo */
+        $posts = Post::where('title','like','%'.$this->search.'%')
+                       ->orwhere('content','like','%'.$this->search.'%')
+                       ->orderBy($this->sort,$this->direction)
+                       ->get();
         /* se lo nmandamos con un compact */
         return view('livewire.show-posts',compact('posts'));
     }

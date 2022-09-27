@@ -10,19 +10,24 @@
     {{$name}} --}}
     {{-- imprimimos todo lo de la base de datos --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {{-- <input type="text" wire:model="search"> --}}
+        <div class="px-6 py-4">
+        <x-jet-input class="w-full" type="text" wire:model="search" placeholder="Escriba algo"/>
+        </div>
         <x-table>
+        @if ($posts->count())
             <table class="min-w-full">
                 <thead>
                     <tr>
                         <th
-                            class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
+                            class="cursor-pointer px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
                             ID
                         </th>
                         <th
-                            class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
+                            class="cursor-pointer px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
                             titulo</th>
                         <th
-                            class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
+                            class="cursor-pointer px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
                             Contenido</th>
                         <th
                             class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
@@ -57,6 +62,11 @@
                     </tr>
                 </tbody>
             </table>
+        @else
+            <div class="px-6 py-4">
+                No existe Ningun registro
+            </div>
+        @endif
         </x-table>
 
     </div>

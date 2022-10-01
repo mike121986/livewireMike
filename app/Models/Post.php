@@ -11,6 +11,6 @@ class Post extends Model
     /* asinacion masiva par los campos title
 content */
 
-    protected $fillable = ['title','content'];
+    protected $fillable = ['title','content','image'];
 
 }

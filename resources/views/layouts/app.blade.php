@@ -9,9 +9,10 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-
+        <script src="https://kit.fontawesome.com/9b13a67b1a.js" crossorigin="anonymous"></script>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- Styles -->
         @livewireStyles
@@ -40,5 +41,15 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script>
+            Livewire.on('alert',function(message){
+                Swal.fire(
+                'Good job!',
+                message,
+                'success'
+                )
+                            })
+        </script>
     </body>
 </html>

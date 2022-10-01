@@ -12,6 +12,12 @@ class ShowPosts extends Component
 
     public $sort = 'id' ;
     public $direction = 'desc';
+
+    /* emitimos una escucha por el componente createPost(para que una vez que inserte el dato se actualize la tabla) 
+        ponemos un metodo protected con la la palabra reservada "$listeners" delante de este enrte corchetes, el nombre de 
+        emisor y este apunta al metodo que se va a ejecutar en esta clase
+    */
+    protected $listeners=['render'=>'render'];
    //public $name;
 
     /**
@@ -51,5 +57,24 @@ class ShowPosts extends Component
                        ->get();
         /* se lo nmandamos con un compact */
         return view('livewire.show-posts',compact('posts'));
+    }
+
+    /**
+     * este metodo es para cachar los datos cuando se de click en los titulos
+     */
+    public function order($sort){
+        if ( $this->sort==$sort) {
+
+            if ($this->direction == 'desc') {
+                $this->direction = 'asc';
+            }else{
+                $this->direction = 'desc';
+            }
+        } else {
+            # code...
+            $this->sort=$sort;
+            $this->direction == 'asc';
+        }
+        
     }
 }

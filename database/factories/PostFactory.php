@@ -16,9 +16,13 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new \Mmo\Faker\PicsumProvider($faker));
+        $faker->addProvider(new \Mmo\Faker\LoremSpaceProvider($faker));
         return [
             'title'=>$this->faker->sentence(3),
-            'content'=>$this->faker->text()
+            'content'=>$this->faker->text(),
+            'image'=>'posts/'. $faker->imageUrl($width = 800, $height = 600)
         ];
     }
 }

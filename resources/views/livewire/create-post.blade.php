@@ -10,7 +10,7 @@
         </x-slot>
         <x-slot name="content">
             <div wire:loading wire:tarjet="image" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Cargando imagne</strong>
+                <strong class="font-bold">Cargando imagen</strong>
                 <span class="block sm:inline">Espere hasta que la imagen halla cargando!!...</span>
                 
               </div>
@@ -31,7 +31,7 @@
                 <x-jet-input-error for="content"/>
             </div>
             <div class="mb-4">
-                <input type="file" wire:model='image'>
+                <input type="file" wire:model='image' id="{{$identificador}}">
                 <x-jet-input-error for="image"/>
             </div>
         </x-slot>

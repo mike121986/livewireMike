@@ -22,7 +22,7 @@ class PostFactory extends Factory
         return [
             'title'=>$this->faker->sentence(3),
             'content'=>$this->faker->text(),
-            'image'=>'posts/'. $faker->imageUrl($width = 800, $height = 600)
+            'image'=> $faker->imageUrl($width = 800, $height = 600)
         ];
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Post;
 
 class ShowPosts extends Component
 {
-    public $search ;
+    public $search , $post;
 
     public $sort = 'id' ;
     public $direction = 'desc';
@@ -76,5 +76,9 @@ class ShowPosts extends Component
             $this->direction == 'asc';
         }
         
+    }
+
+    public function edit(Post $post){
+        $this->post = $post;
     }
 }

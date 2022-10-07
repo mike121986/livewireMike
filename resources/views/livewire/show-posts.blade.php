@@ -92,8 +92,9 @@
                                 class="px-6 py-4 whitespace-no-wrap  border-b border-gray-500 text-sm leading-5">
                                 {{-- <button
                                     class="py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">View
-                                    Details</button> --}}
-                                    @livewire('edit-post', ['post' => $post], key($post->id))
+                                    Details</button> 
+                                    @livewire('edit-post', ['post' => $post], key($post->id))--}}
+                                    <a class="btn btn-green" wire:click="edit({{$post}})"><i class="fas fa-edit"></i></a>
                                     
                             </td>
                         </tr>

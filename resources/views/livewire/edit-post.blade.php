@@ -6,6 +6,16 @@
             Editar el post {{$post->title}}
         </x-slot>  
         <x-slot name="content">
+            <div wire:loading wire:tarjet="image" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Cargando imagen</strong>
+                <span class="block sm:inline">Espere hasta que la imagen halla cargando!!...</span>                
+              </div>
+            @if ($image)
+                <img class="mb-4" src="{{$image->temporaryUrl()}}" alt=""> 
+            @else
+           
+                <img src="{{Storage::url($post->image)}}" alt="">               
+            @endif
             <div class="mb-4">
                 <x-jet-label value="Titulo del post"/>
                 <x-jet-input wire:model="post.title" type="text" class="w-full"/>
@@ -13,6 +23,10 @@
             <div class="mb-4">
                 <x-jet-label value="Contenido del post"/>
                 <textarea wire:model="post.content" rows="6" class="form-control w-full"></textarea>
+            </div>
+            <div class="mb-4">
+                <input type="file" wire:model='image' id="{{$identificador}}">
+                <x-jet-input-error for="image"/>
             </div>
         </x-slot>  
         <x-slot name="footer">

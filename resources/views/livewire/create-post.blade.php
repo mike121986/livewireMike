@@ -15,9 +15,7 @@
                 
               </div>
             @if ($image)
-                <img class="mb-4" src="{{$image->temporaryUrl()}}" alt="">
-            @else
-                
+                <img class="mb-4" src="{{$image->temporaryUrl()}}" alt="">                
             @endif
             <div class="mb-a">
                 <x-jet-label value="Titulo del Post"/>   

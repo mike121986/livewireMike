@@ -73,20 +73,20 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white">
-                    @foreach ($posts as $post)
+                    @foreach ($posts as $item)
                         <tr>
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                                 <div class="flex items-center">
                                     <div>
-                                        <div class="text-sm leading-5 text-gray-800">{{$post->id}}</div>
+                                        <div class="text-sm leading-5 text-gray-800">{{$item->id}}</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                                <div class="text-sm leading-5 text-blue-900">{{$post->title}}</div>
+                                <div class="text-sm leading-5 text-blue-900">{{$item->title}}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                                {{$post->content}}
+                                {{$item->content}}
                             </td>
                             <td
                                 class="px-6 py-4 whitespace-no-wrap  border-b border-gray-500 text-sm leading-5">
@@ -94,7 +94,7 @@
                                     class="py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">View
                                     Details</button> 
                                     @livewire('edit-post', ['post' => $post], key($post->id))--}}
-                                    <a class="btn btn-green" wire:click="edit({{$post}})"><i class="fas fa-edit"></i></a>
+                                    <a class="btn btn-green" wire:click="edit({{$item}})"><i class="fas fa-edit"></i></a>
                                     
                             </td>
                         </tr>
@@ -104,10 +104,55 @@
             </table>
         @else
             <div class="px-6 py-4">
-                No existe Ningun registro
+                No existe Ningun registroMotel Pegas
             </div>
         @endif
         </x-table>
 
     </div>
+
+
+    <x-jet-dialog-modal wire:model="open_edit">
+        <x-slot name="title">
+            Editar el post {{$post->title}}
+        </x-slot>  
+        <x-slot name="content">
+            <div wire:loading wire:tarjet="image" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Cargando imagen</strong>
+                <span class="block sm:inline">Espere hasta que la imagen halla cargando!!...</span>                
+              </div>
+            @if ($image)
+                <img class="mb-4" src="{{$image->temporaryUrl()}}" alt=""> 
+            @else
+           {{--  {{$post->image}} --}}
+           <img src="{{Storage::url($post->image)}}" alt="">   
+              @if (!$existe)
+              <img src="{{$post->image}}" alt="">       
+              @endif
+                        
+                        
+
+            @endif
+            <div class="mb-4">
+                <x-jet-label value="Titulo del post"/>
+                <x-jet-input wire:model="post.title" type="text" class="w-full"/>
+            </div>
+            <div class="mb-4">
+                <x-jet-label value="Contenido del post"/>
+                <textarea wire:model="post.content" rows="6" class="form-control w-full"></textarea>
+            </div>
+            <div class="mb-4">
+                <input type="file" wire:model='image' id="{{$identificador}}">
+                <x-jet-input-error for="image"/>
+            </div>
+        </x-slot>  
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$set('open_edit',false)">
+                Cancelar
+            </x-jet-secondary-button>
+            <x-jet-danger-button wire:click="update" wire:loading.attr="disbled" class="disabled:opacity-25">
+                Actualizar
+            </x-jet-danger-button>
+        </x-slot>  
+    </x-jet-dialog-modal>
 </div>

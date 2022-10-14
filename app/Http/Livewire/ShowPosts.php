@@ -8,23 +8,39 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
 /* clase que nos ayus a subir fotos al servido */
 use Livewire\WithFileUploads;
+/* esta clase nos ayuda a hacer la paginacion sin necesidad de recargar la pagina */
+use Livewire\WithPagination;
 
 class ShowPosts extends Component
 {
     use WithFileUploads;
-    public $search , $post, $image,$identificador,$existe;
+    use WithPagination;
 
+    public $post, $image,$identificador,$existe;
+    public $search = '';
     public $sort = 'id' ;
     public $direction = 'desc';
+
+    /* propiedad para mostrar la cantidad que items que queremos mostrar en la paginacion la incializamos en 10 itms */
+    public $cant = '10';
+
+    /* propiedad para hacer el efecto que se carga la pagina  */
+    public $readyToLoad = false;
 
     /* incializamos una propiedad con el valor de false ya que este sera par abrir el modal  */
     public $open_edit = false;
 
+    /* hacemos un query string (este es para enviar la cantidad de items por la url) */
+    protected $queryString = ["cant" => ['except' => '10'],
+                              "search" => ['except' => ''],
+                              "sort" => ['except' => 'id'],
+                              "direction" => ['except' => 'desc']
+                            ];
     /* emitimos una escucha por el componente createPost(para que una vez que inserte el dato se actualize la tabla) 
         ponemos un metodo protected con la la palabra reservada "$listeners" delante de este enrte corchetes, el nombre de 
         emisor y este apunta al metodo que se va a ejecutar en esta clase
     */
-    protected $listeners=['render'=>'render'];
+    protected $listeners=['render'=>'render','delete'=>'delete'];
    //public $name;
 
     /**
@@ -60,7 +76,10 @@ class ShowPosts extends Component
         $this->identificador = rand();
         $this->post = new Post();
     }
-
+    /* vamos a resetar la propiedad search para hacer la busqueda desde cuarquier paginacion */
+    public function updatingSearch(){
+        $this->resetPage();
+    }
     /**
      * esta clase mantiene siempre esta verificando 
      * que halla algun cambio en los datos que se estan enviando
@@ -71,12 +90,22 @@ class ShowPosts extends Component
         /* rescatamos todos lo que tiene el objeto post
         $posts = Post::all(); */
         /* filtramos por el titulo */
-        $posts = Post::where('title','like','%'.$this->search.'%')
+        if($this->readyToLoad){
+            $posts = Post::where('title','like','%'.$this->search.'%')
                        ->orwhere('content','like','%'.$this->search.'%')
                        ->orderBy($this->sort,$this->direction)
-                       ->get();
+                       //->get(); // este metodo nos trae todo
+                       ->paginate($this->cant); // este metodo nos trae los datos paginados
+        }else{
+            $posts = [];
+        }
+       /*   */
         /* se lo nmandamos con un compact */
         return view('livewire.show-posts',compact('posts'));
+    }
+
+    public function loadPost(){
+        $this->readyToLoad = true;
     }
 
     /**
@@ -123,5 +152,9 @@ class ShowPosts extends Component
           $this->emitto('show-posts','render'); */
          // emitimos una alerta
          $this->emit('alert','El post se actualizo Corerrectamente');
+    }
+
+    public function delete(POST $post){
+        $post->delete();
     }
 }

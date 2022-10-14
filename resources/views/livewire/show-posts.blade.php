@@ -1,4 +1,4 @@
-<div>
+<div wire:init = "loadPost">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -12,11 +12,21 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {{-- <input type="text" wire:model="search"> --}}
         <div class="px-6 py-4 flex item-center">
-        <x-jet-input class="flex-1 mr-4" type="text" wire:model="search" placeholder="Escriba algo"/>
+            <div class="flex items-center">
+                <span>Mostrar</span>
+                <select wire:model="cant" class="mx-2 form-control" >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span>Entradas</span>
+            </div>
+        <x-jet-input class="flex-1 mx-4" type="text" wire:model="search" placeholder="Escriba algo"/>
         @livewire('create-post')
         </div>
         <x-table>
-        @if ($posts->count())
+        @if (count($posts))
             <table class="min-w-full">
                 <thead>
                     <tr>
@@ -89,12 +99,13 @@
                                 {{$item->content}}
                             </td>
                             <td
-                                class="px-6 py-4 whitespace-no-wrap  border-b border-gray-500 text-sm leading-5">
+                                class="px-6 py-4 whitespace-no-wrap  border-b border-gray-500 text-sm leading-5 flex">
                                 {{-- <button
                                     class="py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">View
                                     Details</button> 
                                     @livewire('edit-post', ['post' => $post], key($post->id))--}}
                                     <a class="btn btn-green" wire:click="edit({{$item}})"><i class="fas fa-edit"></i></a>
+                                    <a class="btn btn-red ml-2" wire:click="$emit('deletePost',{{$item->id}})"><i class="fas fa-trash"></i></a>
                                     
                             </td>
                         </tr>
@@ -102,13 +113,17 @@
                     </tr>
                 </tbody>
             </table>
+            @if ($posts->hasPages())
+                <div class="px-6 py-3">
+                    {{$posts->links()}}
+                </div>            
+            @endif
         @else
             <div class="px-6 py-4">
                 No existe Ningun registroMotel Pegas
             </div>
         @endif
         </x-table>
-
     </div>
 
 
@@ -155,4 +170,32 @@
             </x-jet-danger-button>
         </x-slot>  
     </x-jet-dialog-modal>
+
+    @push('js')
+        <script src="sweetalert2.all.min.js"></script>
+        <script>
+            /* evento que de escucha solo cuando sea presionado el boton de eliminar */
+            Livewire.on('deletePost',postId => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        /* emitir componenete para que lo escucho mi componenete */
+                        Livewire.emitTo('show-posts','delete',postId)
+                        Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                        )
+                    }
+                    })
+            })
+        </script>
+    @endpush
 </div>

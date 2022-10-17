@@ -96,7 +96,7 @@
                                 <div class="text-sm leading-5 text-blue-900">{{$item->title}}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                                {{$item->content}}
+                                {!! $item->content !!}
                             </td>
                             <td
                                 class="px-6 py-4 whitespace-no-wrap  border-b border-gray-500 text-sm leading-5 flex">
@@ -105,7 +105,7 @@
                                     Details</button> 
                                     @livewire('edit-post', ['post' => $post], key($post->id))--}}
                                     <a class="btn btn-green" wire:click="edit({{$item}})"><i class="fas fa-edit"></i></a>
-                                    <a class="btn btn-red ml-2" wire:click="$emit('deletePost',{{$item->id}})"><i class="fas fa-trash"></i></a>
+                                    <a class="btn btn-red " wire:click="$emit('deletePost',{{$item->id}})"><i class="fas fa-trash"></i></a>
                                     
                             </td>
                         </tr>

@@ -34,23 +34,28 @@ del lado de la vista es necesario que no este en .defer (o que no de renderize a
         
     } */
     public function save(){
-
-        $this->validate();
-        $image = $this->image->store('public/posts');
-
-        Post::create([
-            'title'=>$this->title,
-            'content' => $this->content,
-            'image' =>  $image
-        ]);
-
-        /* resetear los campos del modal */
-        $this->reset(['open','title','content','image']);
-        $this->identificador = rand();
-        /* emitimos un evento */
-        $this->emitto('show-posts','render');
-        $this->emit('alert','El post se creo Corerrectamente');
+        try {
+            $this->validate();
+            $image = $this->image->store('public/posts');
+    
+            Post::create([
+                'title'=>$this->title,
+                'content' => $this->content,
+                'image' =>  $image
+            ]);
+    
+            /* resetear los campos del modal */
+            $this->reset(['open','title','content','image']);
+            $this->identificador = rand();
+            /* emitimos un evento */
+            $this->emitto('show-posts','render');
+            $this->emit('alert','El post se creo Corerrectamente');
+        } catch (\Throwable $th) {
+            throw $th;
+           /*  echo "excepcion capturado :".$th->getMessage(); */
+        }
     }
+
     public function render()
     {
         return view('livewire.create-post');

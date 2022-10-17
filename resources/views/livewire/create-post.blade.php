@@ -23,6 +23,7 @@
                 <x-jet-input type="text" class="w-full" wire:model.defer='title'/>
                 <x-jet-input-error for="title"/>
             </div>
+           
             <div class="mb-4" wire:ignore>  {{-- se va a renderizar todo meno este --}}  
                 <x-jet-label value="Contenido del Post"/>
                 <textarea 
@@ -40,8 +41,8 @@
         </x-slot>
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$set('open',false)">Cancelar</x-jet-secondary-button>
-            <x-jet-danger-button wire:click="save"  wire:loading.attr="disabld" wire:tarjet="save, image" class="disabled:opacity-25">Crear Post</x-jet-danger-button>
-            {{-- <span wire:loading wire:tarjet="save">Cargando...</span> --}}
+            <x-jet-danger-button wire:click="save"  wire:loading.attr="disabled" wire:tarjet="save, image" class="disabled:opacity-25">Crear Post</x-jet-danger-button>
+            <span wire:loading wire:tarjet="save">Cargando...</span>
         </x-slot>
     </x-jet-dialog-modal>
 
@@ -56,7 +57,7 @@
                 }  */
                     function(editor){
                         editor.model.document.on('change:data',()=>{
-                            @this.set('content',editor.getData)
+                            @this.set('content',editor.getData())
                         })
                     })
                 .catch( err => {
